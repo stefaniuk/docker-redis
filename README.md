@@ -21,8 +21,6 @@ Todo
 ----
 
 - Review [README.md](README.md) file
-- Review [Dockerfile](Dockerfile) file
-- Review [entrypoint.sh](entrypoint.sh) file
 
 # Content
 

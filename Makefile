@@ -12,7 +12,7 @@ help:
 	@echo
 	@echo "Usage:"
 	@echo
-	@echo "    make build|release|push|start|stop|log|bash|clean|purge"
+	@echo "    make build|release|push|start|log|bash|stop|clean|purge"
 	@echo
 
 build:
@@ -30,16 +30,16 @@ start:
 		--hostname=$(CONTAINER) \
 		$(REPOSITORY)
 
-stop:
-	@docker stop $(CONTAINER)
-
 log:
 	@docker logs --follow $(CONTAINER)
 
 bash:
 	@docker exec --interactive --tty $(CONTAINER) /bin/bash
 
-clean:
+stop:
+	@docker stop $(CONTAINER) > /dev/null 2>&1 ||:
+
+clean: stop
 	@docker rm $(CONTAINER) > /dev/null 2>&1 ||:
 
 purge: clean
