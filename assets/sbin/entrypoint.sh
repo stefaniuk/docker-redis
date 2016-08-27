@@ -1,6 +1,10 @@
 #!/bin/bash
 set -e
 
+mkdir -p /run/redis
+chmod -R 755 /run/redis
+chown -R $REDIS_USER:$REDIS_USER /run/redis
+
 if [ "${1#-}" != "$1" ] || [ "${1%.conf}" != "$1" ]; then
     set -- redis-server "$@"
 fi

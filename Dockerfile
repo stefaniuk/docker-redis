@@ -24,8 +24,8 @@ RUN set -ex \
     && grep -q '^#define CONFIG_DEFAULT_PROTECTED_MODE 0$' /usr/src/redis/src/server.h \
     && make -C /usr/src/redis \
     && make -C /usr/src/redis install \
-    && mkdir /usr/local/etc/redis \
-    && cp /usr/src/redis/redis.conf /usr/local/etc/redis/redis.conf \
+    && mkdir /etc/redis \
+    && cp /usr/src/redis/redis.conf /etc/redis/redis.conf \
     && rm -r /usr/src/redis \
     && apt-get purge --yes --auto-remove \
         gcc \
@@ -36,7 +36,10 @@ RUN set -ex \
     && groupadd --system $REDIS_USER \
     && useradd --system --gid $REDIS_USER $REDIS_USER \
     && mkdir $REDIS_DATA_DIR \
-    && chown $REDIS_USER:$REDIS_USER $REDIS_DATA_DIR
+    && chown $REDIS_USER:$REDIS_USER $REDIS_DATA_DIR \
+    \
+    && sed 's/^# unixsocket \/tmp\/redis.sock/unixsocket \/run\/redis\/redis.sock/' -i /etc/redis/redis.conf \
+    && sed 's/^# unixsocketperm 755/unixsocketperm 777/' -i /etc/redis/redis.conf
 
 WORKDIR $REDIS_DATA_DIR
 VOLUME [ "$REDIS_DATA_DIR" ]
@@ -44,4 +47,4 @@ EXPOSE 6379
 
 COPY assets/sbin/entrypoint.sh /sbin/entrypoint.sh
 ENTRYPOINT [ "/sbin/entrypoint.sh" ]
-CMD [ "redis-server", "/usr/local/etc/redis/redis.conf" ]
+CMD [ "redis-server", "/etc/redis/redis.conf" ]
