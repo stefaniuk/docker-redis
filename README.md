@@ -1,6 +1,23 @@
-[![Circle CI](https://circleci.com/gh/sameersbn/docker-redis.svg?style=shield)](https://circleci.com/gh/sameersbn/docker-redis) [![Docker Repository on Quay.io](https://quay.io/repository/sameersbn/redis/status "Docker Repository on Quay.io")](https://quay.io/repository/sameersbn/redis)
+[![CircleCI](https://circleci.com/gh/stefaniuk/docker-redis.svg?style=shield "CircleCI")](https://circleci.com/gh/stefaniuk/docker-redis) [![Quay](https://quay.io/repository/stefaniuk/redis/status "Quay")](https://quay.io/repository/stefaniuk/redis)
 
-# sameersbn/redis
+Docker Redis
+============
+
+`Dockerfile` to create a Docker image for [Redis](http://redis.io/).
+
+Installation
+------------
+
+Automated builds of the image are available on [Docker Hub](https://hub.docker.com/r/stefaniuk/redis/).
+
+    docker pull stefaniuk/redis:latest
+
+Alternatively you can build the image yourself.
+
+    docker build --tag stefaniuk/redis \
+        github.com/stefaniuk/docker-redis
+
+# Content
 
 - [Introduction](#introduction)
   - [Contributing](#contributing)

@@ -1,7 +1,5 @@
 .git
 circle.yml
-LICENSE
 VERSION
 README.md
-Changelog.md
 Makefile
