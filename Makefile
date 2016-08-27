@@ -12,7 +12,7 @@ help:
 	@echo
 	@echo "Usage:"
 	@echo
-	@echo "    make build|release|push|run|log|bash|clean|purge"
+	@echo "    make build|release|push|start|stop|log|bash|clean|purge"
 	@echo
 
 build:
@@ -24,11 +24,14 @@ release: build
 push: release
 	@docker push $(REPOSITORY):$(shell cat VERSION)
 
-run:
+start:
 	@docker run --detach \
-		--name="$(CONTAINER)" \
-		--hostname="$(CONTAINER)" \
+		--name=$(CONTAINER) \
+		--hostname=$(CONTAINER) \
 		$(REPOSITORY)
+
+stop:
+	@docker stop $(CONTAINER)
 
 log:
 	@docker logs --follow $(CONTAINER)

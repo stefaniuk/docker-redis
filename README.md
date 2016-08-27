@@ -23,7 +23,6 @@ Todo
 - Review [README.md](README.md) file
 - Review [Dockerfile](Dockerfile) file
 - Review [entrypoint.sh](entrypoint.sh) file
-- Review [circle.yml](circle.yml) file
 
 # Content
 
