@@ -2,9 +2,13 @@ machine:
   services:
     - docker
 dependencies:
+  cache_directories:
+    - "~/docker"
   override:
     - docker info
+    - if [[ -e ~/docker/image.tar ]]; then docker load --input ~/docker/image.tar; fi
     - docker build --tag stefaniuk/redis .
+    - mkdir -p ~/docker; docker save stefaniuk/redis > ~/docker/image.tar
 test:
   override:
     - docker run --detach --name=redis --volume /run/redis stefaniuk/redis; sleep 10
