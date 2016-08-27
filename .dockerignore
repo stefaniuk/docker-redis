@@ -1,5 +1,5 @@
 .git
 circle.yml
-VERSION
-README.md
 Makefile
+README.md
+VERSION
