@@ -9,7 +9,7 @@ ENV REDIS_VERSION="3.2.3" \
 
 RUN set -ex \
     \
-    &&apt-get --yes update \
+    && apt-get --yes update \
     && apt-get --yes install \
         gcc \
         libc6-dev \
