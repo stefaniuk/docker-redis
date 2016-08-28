@@ -8,12 +8,14 @@ ENV REDIS_VERSION="3.2.3" \
     REDIS_DATA_DIR=/var/lib/redis
 
 RUN set -ex \
-    \
-    && apt-get --yes update \
-    && apt-get --yes install \
+    && buildDeps=' \
         gcc \
         libc6-dev \
         make \
+    ' \
+    && apt-get --yes update \
+    && apt-get --yes install $buildDeps \
+    \
     && wget -O redis.tar.gz "$REDIS_DOWNLOAD_URL" \
     && echo "$REDIS_DOWNLOAD_SHA1 *redis.tar.gz" | sha1sum -c - \
     && mkdir -p /usr/src/redis \
@@ -27,19 +29,17 @@ RUN set -ex \
     && mkdir /etc/redis \
     && cp /usr/src/redis/redis.conf /etc/redis/redis.conf \
     && rm -r /usr/src/redis \
-    && apt-get purge --yes --auto-remove \
-        gcc \
-        libc6-dev \
-        make \
-    && rm -rf /tmp/* /var/tmp/* /var/lib/apt/lists/* \
+    \
+    && sed 's/^# unixsocket \/tmp\/redis.sock/unixsocket \/run\/redis\/redis.sock/' -i /etc/redis/redis.conf \
+    && sed 's/^# unixsocketperm 755/unixsocketperm 777/' -i /etc/redis/redis.conf \
     \
     && groupadd --system $REDIS_USER \
     && useradd --system --gid $REDIS_USER $REDIS_USER \
     && mkdir $REDIS_DATA_DIR \
     && chown $REDIS_USER:$REDIS_USER $REDIS_DATA_DIR \
     \
-    && sed 's/^# unixsocket \/tmp\/redis.sock/unixsocket \/run\/redis\/redis.sock/' -i /etc/redis/redis.conf \
-    && sed 's/^# unixsocketperm 755/unixsocketperm 777/' -i /etc/redis/redis.conf
+    && apt-get purge --yes --auto-remove $buildDeps \
+    && rm -rf /tmp/* /var/tmp/* /var/lib/apt/lists/*
 
 WORKDIR $REDIS_DATA_DIR
 VOLUME [ "$REDIS_DATA_DIR" ]
