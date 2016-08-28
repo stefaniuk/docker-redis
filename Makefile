@@ -26,8 +26,8 @@ push: release
 
 start:
 	@docker run --detach \
-		--name=$(CONTAINER) \
-		--hostname=$(CONTAINER) \
+		--name $(CONTAINER) \
+		--hostname $(CONTAINER) \
 		$(REPOSITORY)
 
 log:
