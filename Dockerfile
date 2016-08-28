@@ -1,4 +1,4 @@
-FROM stefaniuk/ubuntu:14.04.20160827
+FROM stefaniuk/ubuntu:14.04.5-20160828
 MAINTAINER daniel.stefaniuk@gmail.com
 
 ENV REDIS_VERSION="3.2.3" \
