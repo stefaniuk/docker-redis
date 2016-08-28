@@ -5,6 +5,7 @@ ENV REDIS_VERSION="3.2.3" \
     REDIS_DOWNLOAD_URL="http://download.redis.io/releases/redis-3.2.3.tar.gz" \
     REDIS_DOWNLOAD_SHA1="92d6d93ef2efc91e595c8bf578bf72baff397507" \
     REDIS_USER="redis" \
+    REDIS_CONF_DIR=/etc/redis \
     REDIS_DATA_DIR=/var/lib/redis
 
 RUN set -ex \
@@ -24,8 +25,8 @@ RUN set -ex \
     && grep -q '^#define CONFIG_DEFAULT_PROTECTED_MODE 0$' /usr/src/redis/src/server.h \
     && make -C /usr/src/redis \
     && make -C /usr/src/redis install \
-    && mkdir /etc/redis \
-    && cp /usr/src/redis/redis.conf /etc/redis/redis.conf \
+    && mkdir -p $REDIS_CONF_DIR \
+    && cp /usr/src/redis/redis.conf $REDIS_CONF_DIR/redis.conf \
     && rm -r /usr/src/redis \
     && apt-get purge --yes --auto-remove \
         gcc \
@@ -38,8 +39,8 @@ RUN set -ex \
     && mkdir $REDIS_DATA_DIR \
     && chown $REDIS_USER:$REDIS_USER $REDIS_DATA_DIR \
     \
-    && sed 's/^# unixsocket \/tmp\/redis.sock/unixsocket \/run\/redis\/redis.sock/' -i /etc/redis/redis.conf \
-    && sed 's/^# unixsocketperm 755/unixsocketperm 777/' -i /etc/redis/redis.conf
+    && sed 's/^# unixsocket \/tmp\/redis.sock/unixsocket \/run\/redis\/redis.sock/' -i $REDIS_CONF_DIR/redis.conf \
+    && sed 's/^# unixsocketperm 755/unixsocketperm 777/' -i $REDIS_CONF_DIR/redis.conf
 
 WORKDIR $REDIS_DATA_DIR
 VOLUME [ "$REDIS_DATA_DIR" ]
@@ -47,4 +48,4 @@ EXPOSE 6379
 
 COPY assets/sbin/entrypoint.sh /sbin/entrypoint.sh
 ENTRYPOINT [ "/sbin/entrypoint.sh" ]
-CMD [ "redis-server", "/etc/redis/redis.conf" ]
+CMD [ "redis-server", "$REDIS_CONF_DIR/redis.conf" ]
