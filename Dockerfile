@@ -1,5 +1,6 @@
 FROM stefaniuk/ubuntu:16.04-20160828
 MAINTAINER daniel.stefaniuk@gmail.com
+# SEE: https://github.com/docker-library/redis/blob/master/3.2/Dockerfile
 
 ENV REDIS_VERSION="3.2.3" \
     REDIS_DOWNLOAD_URL="http://download.redis.io/releases/redis-3.2.3.tar.gz" \
