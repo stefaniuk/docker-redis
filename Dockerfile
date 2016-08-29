@@ -1,11 +1,10 @@
-FROM stefaniuk/ubuntu:16.04-20160828
+FROM stefaniuk/ubuntu:16.04-20160829
 MAINTAINER daniel.stefaniuk@gmail.com
 # SEE: https://github.com/docker-library/redis/blob/master/3.2/Dockerfile
 
 ENV REDIS_VERSION="3.2.3" \
     REDIS_DOWNLOAD_URL="http://download.redis.io/releases/redis-3.2.3.tar.gz" \
     REDIS_DOWNLOAD_SHA1="92d6d93ef2efc91e595c8bf578bf72baff397507" \
-    REDIS_USER="redis" \
     REDIS_DATA_DIR=/var/lib/redis
 
 RUN set -ex \
@@ -30,22 +29,20 @@ RUN set -ex \
     && mkdir /etc/redis \
     && cp /usr/src/redis/redis.conf /etc/redis/redis.conf \
     && rm -r /usr/src/redis \
-    \
     && sed 's/^# unixsocket \/tmp\/redis.sock/unixsocket \/run\/redis\/redis.sock/' -i /etc/redis/redis.conf \
     && sed 's/^# unixsocketperm 755/unixsocketperm 777/' -i /etc/redis/redis.conf \
-    \
-    && groupadd --system $REDIS_USER \
-    && useradd --system --gid $REDIS_USER $REDIS_USER \
-    && mkdir $REDIS_DATA_DIR \
-    && chown $REDIS_USER:$REDIS_USER $REDIS_DATA_DIR \
+    && mkdir \
+        /run/redis \
+        $REDIS_DATA_DIR \
+    && chown -R $SYSTEM_USER:$SYSTEM_USER \
+        /run/redis \
+        $REDIS_DATA_DIR \
     \
     && apt-get purge --yes --auto-remove $buildDeps \
-    && rm -rf /tmp/* /var/tmp/* /var/lib/apt/lists/*
+    && rm -rf /tmp/* /var/tmp/* /var/lib/apt/lists/* /var/cache/apt/*
 
 WORKDIR $REDIS_DATA_DIR
 VOLUME [ "$REDIS_DATA_DIR" ]
 EXPOSE 6379
 
-COPY assets/sbin/entrypoint.sh /sbin/entrypoint.sh
-ENTRYPOINT [ "/sbin/entrypoint.sh" ]
 CMD [ "redis-server", "/etc/redis/redis.conf" ]
