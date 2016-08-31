@@ -10,7 +10,7 @@ Installation
 
 Automated builds of the image are available on [Docker Hub](https://hub.docker.com/r/stefaniuk/redis/).
 
-    docker pull stefaniuk/redis:latest
+    docker pull stefaniuk/redis
 
 Alternatively you can build the image yourself.
 
@@ -25,8 +25,8 @@ Start container using:
     docker run --detach --restart always \
         --name redis \
         --hostname redis \
-        --publish 6379:6379 \
         --volume /srv/docker/redis:/var/lib/redis \
+        --publish 6379:6379 \
         stefaniuk/redis
 
 Log in to Redis using:
