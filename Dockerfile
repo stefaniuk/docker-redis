@@ -4,7 +4,7 @@ MAINTAINER daniel.stefaniuk@gmail.com
 
 ARG APT_PROXY
 ENV REDIS_VERSION="3.2.3" \
-    REDIS_DOWNLOAD_URL="http://download.redis.io/releases/redis-3.2.3.tar.gz" \
+    REDIS_DOWNLOAD_URL="http://download.redis.io/releases" \
     REDIS_DOWNLOAD_SHA1="92d6d93ef2efc91e595c8bf578bf72baff397507"
 
 RUN set -ex \
@@ -18,7 +18,7 @@ RUN set -ex \
     && apt-get --yes update \
     && apt-get --yes install $buildDeps \
     \
-    && wget -O redis.tar.gz "$REDIS_DOWNLOAD_URL" \
+    && wget -O redis.tar.gz "$REDIS_DOWNLOAD_URL/redis-$REDIS_VERSION.tar.gz" \
     && echo "$REDIS_DOWNLOAD_SHA1 *redis.tar.gz" | sha1sum -c - \
     && mkdir -p /usr/src/redis \
     && tar -xzf redis.tar.gz -C /usr/src/redis --strip-components=1 \
