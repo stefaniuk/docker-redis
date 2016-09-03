@@ -11,5 +11,5 @@ dependencies:
     - mkdir -p ~/docker; docker save stefaniuk/redis > ~/docker/image.tar
 test:
   override:
-    - docker run --detach --name=redis --volume /run/redis stefaniuk/redis; sleep 10
+    - docker run --interactive --tty --detach --name=redis --volume /run/redis stefaniuk/redis; sleep 10
     - docker run --volumes-from=redis stefaniuk/redis redis-cli -s /run/redis/redis.sock PING
