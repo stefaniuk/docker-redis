@@ -1,4 +1,4 @@
-FROM stefaniuk/ubuntu:16.04-20160903
+FROM stefaniuk/ubuntu:16.04-20160905
 MAINTAINER daniel.stefaniuk@gmail.com
 # SEE: https://github.com/docker-library/redis/blob/master/3.2/Dockerfile
 
@@ -31,6 +31,7 @@ RUN set -ex \
     && mkdir /etc/redis \
     && cp /usr/src/redis/redis.conf /etc/redis/redis.conf \
     && rm -r /usr/src/redis \
+    && sed 's/^bind 127.0.0.1/bind 0.0.0.0/' -i /etc/redis/redis.conf \
     && sed 's/^# unixsocket \/tmp\/redis.sock/unixsocket \/run\/redis\/redis.sock/' -i /etc/redis/redis.conf \
     && sed 's/^# unixsocketperm 700/unixsocketperm 777/' -i /etc/redis/redis.conf \
     \
