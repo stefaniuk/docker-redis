@@ -7,6 +7,9 @@ ENV REDIS_VERSION="3.2.3" \
     REDIS_DOWNLOAD_URL="http://download.redis.io/releases" \
     REDIS_DOWNLOAD_SHA1="92d6d93ef2efc91e595c8bf578bf72baff397507"
 
+COPY assets/etc/redis/redis.conf /etc/redis/redis.conf
+COPY assets/etc/redis/sentinel.conf /etc/redis/sentinel.conf
+
 RUN set -ex \
     \
     && buildDeps=' \
@@ -28,8 +31,6 @@ RUN set -ex \
     && grep -q '^#define CONFIG_DEFAULT_PROTECTED_MODE 0$' /usr/src/redis/src/server.h \
     && make -C /usr/src/redis \
     && make -C /usr/src/redis install \
-    && mkdir /etc/redis \
-    && cp /usr/src/redis/redis.conf /etc/redis/redis.conf \
     && rm -r /usr/src/redis \
     && sed 's/^bind 127.0.0.1/bind 0.0.0.0/' -i /etc/redis/redis.conf \
     && sed 's/^# unixsocket \/tmp\/redis.sock/unixsocket \/run\/redis\/redis.sock/' -i /etc/redis/redis.conf \
