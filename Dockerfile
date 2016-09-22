@@ -1,4 +1,4 @@
-FROM stefaniuk/ubuntu:16.04-20160905
+FROM stefaniuk/ubuntu:16.04-20160922
 MAINTAINER daniel.stefaniuk@gmail.com
 # SEE: https://github.com/docker-library/redis/blob/master/3.2/Dockerfile
 
