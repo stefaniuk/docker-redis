@@ -42,7 +42,7 @@ RUN set -ex \
 
 WORKDIR /var/lib/redis
 VOLUME [ "/var/lib/redis" ]
-EXPOSE 6379
+EXPOSE 6379 26379
 
 COPY assets/sbin/bootstrap.sh /sbin/bootstrap.sh
 CMD [ "redis-server", "/etc/redis/redis.conf" ]
